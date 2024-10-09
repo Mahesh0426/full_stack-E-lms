@@ -3,6 +3,8 @@ import cors from "cors";
 import "dotenv/config";
 import { connectToMongoDb } from "./config/DbConfig.js";
 
+import authRouter from "./routers/authRouter.js";
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -33,6 +35,7 @@ app.get("/", (req, res) => {
 connectToMongoDb();
 
 //routes
+app.use("/api/register/", authRouter);
 
 // start server
 app.listen(PORT, (error) => {
