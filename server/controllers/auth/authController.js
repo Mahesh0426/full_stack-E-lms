@@ -1,10 +1,12 @@
 import User from "../../models/userSchema.js";
-import { hashPassword } from "./utility/bcryptHelper.js";
+import { comparePassword, hashPassword } from "./utility/bcryptHelper.js";
+import { generateAccessJWT } from "./utility/jwtHelper.js";
 import {
   buildErrorResponse,
   buildSuccessResponse,
 } from "./utility/responseHelper.js";
 
+// Register a new user | SIGN IN | POST | Public Route
 const registerUser = async (req, res) => {
   const { userName, userEmail, password, role } = req.body;
 
@@ -18,7 +20,7 @@ const registerUser = async (req, res) => {
   //hasing password
   const encryptedPassword = hashPassword(password);
 
-  // Create and save the new user
+  // Create and save the new user in db
   try {
     const newUser = new User({
       userName,
@@ -36,4 +38,36 @@ const registerUser = async (req, res) => {
   }
 };
 
-export default registerUser;
+// login a registered user | LOG IN | POST request | Public route
+const loginUser = async (req, res) => {
+  try {
+    const { userEmail, password } = req.body;
+
+    // Find user by email
+    const checkUser = await User.findOne({ userEmail });
+
+    // Check if user exists
+    if (!checkUser) {
+      return buildErrorResponse(res, "User account does not exist!!");
+    }
+
+    // Compare the password
+    const isPasswordMatch = comparePassword(password, checkUser.password);
+    if (isPasswordMatch) {
+      // Generate and send back the access token using the email
+      const accessToken = generateAccessJWT(checkUser.userEmail);
+      return buildSuccessResponse(res, accessToken, "Logged in successfully!!");
+    }
+
+    return buildErrorResponse(res, "Invalid credentials!!");
+  } catch (error) {
+    // Handle unexpected errors
+    console.error("Login error:", error);
+    return buildErrorResponse(
+      res,
+      "An unexpected error occurred. Please try again later."
+    );
+  }
+};
+
+export { registerUser, loginUser };

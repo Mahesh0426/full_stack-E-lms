@@ -1,9 +1,11 @@
 // @ts-nocheck
 import express from "express";
-import registerUser from "../controllers/auth/authController.js";
+import { loginUser, registerUser } from "../controllers/auth/authController.js";
 
 const authRouter = express.Router();
 
-authRouter.post("/register", registerUser);
+// | SIGN IN | POST | Public Route
+authRouter.post("/", registerUser);
+authRouter.post("/login", loginUser);
 
 export default authRouter;

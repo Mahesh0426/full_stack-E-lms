@@ -6,8 +6,8 @@ export const buildSuccessResponse = (res, data, message = "") => {
   });
 };
 
-export const buildErrorResponse = (res, message = "") => {
-  return res.status(400).json({
+export const buildErrorResponse = (res, message = "", statusCode = 400) => {
+  return res.status(statusCode).json({
     status: "error",
     message: message || "Something went wrong!",
   });
