@@ -33,7 +33,7 @@ export const signUpFormControls = [
   },
 ];
 
-export const signInFormControls = [
+export const LogInFormControls = [
   {
     name: "userEmail",
     label: "Email Address",
@@ -52,7 +52,7 @@ export const signInFormControls = [
   },
 ];
 
-export const initialSignInFormData = {
+export const initialLoginFormData = {
   userEmail: "",
   password: "",
 };
@@ -61,4 +61,5 @@ export const initialSignUpFormData = {
   userName: "",
   userEmail: "",
   password: "",
+  confirmPassword: "",
 };

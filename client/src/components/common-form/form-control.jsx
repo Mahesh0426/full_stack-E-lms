@@ -1,71 +1,97 @@
 import React from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
 const FormControl = (props) => {
   const { formControls = [], formData, setFormData } = props;
 
-  // Function to render different form control types
-  function renderComponentByType(getControlItem) {
-    let element = null;
+  // Function to update formData
+  const handleInputChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
 
-    if (getControlItem.componentType === "input") {
-      element = (
-        <Input
-          id={getControlItem.name}
-          name={getControlItem.name}
-          placeholder={getControlItem.placeholder}
-          type={getControlItem.type}
-        />
-      );
-    } else if (getControlItem.componentType === "select") {
-      element = (
-        <Select>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder={getControlItem.label} />
-          </SelectTrigger>
-          <SelectContent>
-            {getControlItem.options && getControlItem.options.length > 0
-              ? getControlItem.options.map((optionItem) => (
-                  <SelectItem key={optionItem.id}>
-                    {optionItem.label}
-                  </SelectItem>
-                ))
-              : null}
-          </SelectContent>
-        </Select>
-      );
-    } else if (getControlItem.componentType === "textarea") {
-      element = (
-        <Textarea
-          id={getControlItem.name}
-          name={getControlItem.name}
-          placeholder={getControlItem.placeholder}
-        />
-      );
-    } else {
-      // Default case if none of the above match
-      element = (
-        <Input
-          id={getControlItem.name}
-          name={getControlItem.name}
-          placeholder={getControlItem.placeholder}
-          type={getControlItem.type}
-        />
-      );
+  // Function to render the appropriate component based on the componentType
+  const renderComponent = ({
+    componentType,
+    name,
+    placeholder,
+    type,
+    label,
+    options = [],
+  }) => {
+    // Get the current value from formData
+    const value = formData[name] || "";
+
+    switch (componentType) {
+      case "input":
+        return (
+          <Input
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            type={type}
+            value={value}
+            onChange={(e) => handleInputChange(name, e.target.value)}
+          />
+        );
+      case "select":
+        return (
+          <Select
+            value={value}
+            onValueChange={(val) => handleInputChange(name, val)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={label} />
+            </SelectTrigger>
+            <SelectContent>
+              {options.map(({ id, label }) => (
+                <SelectItem key={id} value={id}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      case "textarea":
+        return (
+          <Textarea
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => handleInputChange(name, e.target.value)}
+          />
+        );
+      default:
+        return (
+          <Input
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            type={type}
+            value={value}
+            onChange={(e) => handleInputChange(name, e.target.value)}
+          />
+        );
     }
-    // Return the rendered element
-    return element;
-  }
+  };
 
   return (
     <div className="flex flex-col gap-3">
-      {formControls.map((controleItem) => (
-        <div key={controleItem.name}>
-          <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
-          {renderComponentByType(controleItem)}
+      {formControls.map((controlItem) => (
+        <div key={controlItem.name}>
+          <Label htmlFor={controlItem.name}>{controlItem.label}</Label>
+
+          {/* Render the appropriate form control (input/select/textarea) */}
+          {renderComponent(controlItem)}
         </div>
       ))}
     </div>

@@ -9,10 +9,10 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  signInFormControls,
+  LogInFormControls,
   signUpFormControls,
 } from "@/config/signUpFormControls";
-import { AuthContext } from "@/context/auth-context/authContect";
+import { AuthContext } from "@/context/authContect";
 import { GraduationCap } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
@@ -22,15 +22,35 @@ const AuthPage = () => {
 
   //get the form control from context provider
   const {
-    signInFormData,
-    setSignInFormData,
+    logInFormData,
+    setLogInFormData,
     signUpFormData,
     setSignUpFormData,
+    handleRegister,
+    handleLogin,
   } = useContext(AuthContext);
 
   //hanlde on Tab change
   const handleOnTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  // function to disabled login form
+  const checkIfLoginValid = () => {
+    return (
+      logInFormData &&
+      logInFormData.userEmail !== "" &&
+      logInFormData.password !== ""
+    );
+  };
+  //function to disabled signup form
+  const checkIfSignUpValid = () => {
+    return (
+      signUpFormData &&
+      signUpFormData.userName !== "" &&
+      signUpFormData.userEmail !== "" &&
+      signUpFormData.password !== ""
+    );
   };
 
   return (
@@ -68,10 +88,12 @@ const AuthPage = () => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <CommonForm
-                  formControls={signInFormControls}
+                  formControls={LogInFormControls}
                   buttonText={"Login"}
-                  formData={signInFormData}
-                  setFormData={setSignInFormData}
+                  formData={logInFormData}
+                  setFormData={setLogInFormData}
+                  isButtonDisabled={!checkIfLoginValid()}
+                  handleOnSubmit={handleLogin}
                 />
               </CardContent>
             </Card>
@@ -94,6 +116,8 @@ const AuthPage = () => {
                   buttonText={"Sign up"}
                   formData={signUpFormData}
                   setFormData={setSignUpFormData}
+                  isButtonDisabled={!checkIfSignUpValid()}
+                  handleOnSubmit={handleRegister}
                 />
               </CardContent>
             </Card>
