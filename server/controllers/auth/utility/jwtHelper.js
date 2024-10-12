@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 // access jwt: session table, exp:15min
 export const generateAccessJWT = (userEmail) => {
   return jwt.sign({ email: userEmail }, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "150m",
   });
 };
 

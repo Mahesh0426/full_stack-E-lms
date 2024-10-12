@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 connectToMongoDb();
 
 //routes
-app.use("/api/register", authRouter);
+app.use("/api/user", authRouter);
 
 // start server
 app.listen(PORT, (error) => {
