@@ -5,10 +5,14 @@ import jwt from "jsonwebtoken";
 // node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 // access jwt: session table, exp:15min
-export const generateAccessJWT = (userEmail) => {
-  return jwt.sign({ email: userEmail }, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: "150m",
-  });
+export const generateAccessJWT = (userEmail, userRole) => {
+  return jwt.sign(
+    { email: userEmail, role: userRole },
+    process.env.JWT_ACCESS_SECRET,
+    {
+      expiresIn: "200m",
+    }
+  );
 };
 
 // verify access token and return decoded email

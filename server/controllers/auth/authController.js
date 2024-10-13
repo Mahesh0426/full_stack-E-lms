@@ -54,14 +54,26 @@ const loginUser = async (req, res) => {
     // Compare the password
     const isPasswordMatch = comparePassword(password, checkUser.password);
     if (isPasswordMatch) {
-      // Generate and send back the access token using the email
-      const accessToken = generateAccessJWT(checkUser.userEmail);
-      return buildSuccessResponse(res, accessToken, "Logged in successfully!!");
+      // Generate and send back the access token and user data
+      const accessToken = generateAccessJWT(
+        checkUser.userEmail,
+        checkUser.role
+      );
+      return buildSuccessResponse(
+        res,
+        {
+          token: accessToken,
+          user: {
+            email: checkUser.userEmail,
+            role: checkUser.role,
+          },
+        },
+        "Logged in successfully!!"
+      );
     }
 
     return buildErrorResponse(res, "Invalid credentials!!");
   } catch (error) {
-    // Handle unexpected errors
     console.error("Login error:", error);
     return buildErrorResponse(
       res,
