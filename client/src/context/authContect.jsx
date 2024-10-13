@@ -1,4 +1,5 @@
 // eslint-disable-next-line react/prop-types
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   initialLoginFormData,
   initialSignUpFormData,
@@ -16,6 +17,8 @@ export default function AuthProvider({ children }) {
   const [logInFormData, setLogInFormData] = useState(initialLoginFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({ authenticate: false, user: null });
+
+  const [isLoading, setIsLoading] = useState(true);
 
   // Helper function to update auth state
   const updateAuthState = (authenticate, user) => {
@@ -38,33 +41,63 @@ export default function AuthProvider({ children }) {
     const response = await loginService(logInFormData);
 
     if (response.status === "success") {
-      // Extract the token from the response
-      const accessToken = response.data;
-      // Save token to sessionStorage
-      sessionStorage.setItem("accessToken", accessToken);
+      // Extract token and user data
+      const { token, user } = response.data;
 
-      //auth update
-      updateAuthState(true, response.data.user);
+      // Save token to sessionStorage
+      sessionStorage.setItem("accessToken", token);
+
+      // Update auth state with user information
+      updateAuthState(true, user);
     } else {
       updateAuthState(false, null);
     }
-    console.log("response", response);
   };
 
   //check auth user
+  // const checkAuthUser = async () => {
+  //   const response = await checkAuthService();
+  //   console.log("checkAuthService response", response);
+  //   if (response.status === "success") {
+  //     updateAuthState(true, response.data);
+  //   } else {
+  //     updateAuthState(false, null);
+  //   }
+  // };
+
+  // Check authenticated user
   const checkAuthUser = async () => {
-    const response = await checkAuthService();
-    if (response.status === "success") {
-      updateAuthState(true, response.data.user);
-    } else {
-      updateAuthState(false, null);
+    try {
+      const response = await checkAuthService();
+      // console.log("checkAuthService response", response);
+
+      if (response.status === "success") {
+        // Assuming response.data contains user details
+        const userData = {
+          email: response.data.email,
+          role: response.data.role || "user",
+        };
+        updateAuthState(true, userData);
+        setIsLoading(false);
+      } else {
+        updateAuthState(false, null);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.status === "error") {
+        updateAuthState(false, null);
+        setIsLoading(false);
+      }
     }
-    console.log("auth response", response);
   };
-  // // useEffect to check auth user when app loads
+
+  // useEffect to check auth user when app loads
   useEffect(() => {
     checkAuthUser();
   }, []);
+
+  // console.log("auth", auth);
 
   return (
     <AuthContext.Provider
@@ -75,9 +108,10 @@ export default function AuthProvider({ children }) {
         setSignUpFormData,
         handleRegister,
         handleLogin,
+        auth,
       }}
     >
-      {children}
+      {isLoading ? <Skeleton /> : children}
     </AuthContext.Provider>
   );
 }

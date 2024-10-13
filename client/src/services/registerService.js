@@ -22,10 +22,10 @@ export const checkAuthService = async () => {
 
 // export const checkAuthService = async () => {
 //   const accessToken = sessionStorage.getItem("accessToken");
-//   console.log("Token being sent:", accessToken);  // Ensure token is being retrieved correctly
+//   console.log("Token being sent:", accessToken);
 //   try {
 //     const response = await axiosInstance.get("/api/user/check-auth");
-//     console.log("Request headers: ", response.config.headers);  // Log request headers
+//     console.log("Request headers: ", response.config.headers);
 //     return response.data;
 //   } catch (error) {
 //     console.error("Error in checkAuthService:", error);
