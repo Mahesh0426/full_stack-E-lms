@@ -92,6 +92,11 @@ export default function AuthProvider({ children }) {
     }
   };
 
+  // function to reset credentials
+  const handleResetCredentials = () => {
+    updateAuthState(false, null);
+  };
+
   // useEffect to check auth user when app loads
   useEffect(() => {
     checkAuthUser();
@@ -109,6 +114,7 @@ export default function AuthProvider({ children }) {
         handleRegister,
         handleLogin,
         auth,
+        handleResetCredentials,
       }}
     >
       {isLoading ? <Skeleton /> : children}
