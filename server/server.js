@@ -4,6 +4,7 @@ import "dotenv/config";
 import { connectToMongoDb } from "./config/DbConfig.js";
 
 import authRouter from "./routers/authRouter.js";
+import mediaRouter from "./routers/mediaRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -36,6 +37,7 @@ connectToMongoDb();
 
 //routes
 app.use("/api/user", authRouter);
+app.use("/api/media", mediaRouter);
 
 // start server
 app.listen(PORT, (error) => {

@@ -1,10 +1,10 @@
 import User from "../../models/userSchema.js";
-import { comparePassword, hashPassword } from "./utility/bcryptHelper.js";
-import { generateAccessJWT } from "./utility/jwtHelper.js";
+import { comparePassword, hashPassword } from "../../utility/bcryptHelper.js";
+import { generateAccessJWT } from "../../utility/jwtHelper.js";
 import {
   buildErrorResponse,
   buildSuccessResponse,
-} from "./utility/responseHelper.js";
+} from "../../utility/responseHelper.js";
 
 // Register a new user | SIGN IN | POST | Public Route
 const registerUser = async (req, res) => {

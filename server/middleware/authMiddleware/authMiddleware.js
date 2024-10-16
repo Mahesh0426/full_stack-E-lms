@@ -1,5 +1,5 @@
-import { verifyAccessJWT } from "../../controllers/auth/utility/jwtHelper.js";
-import { buildErrorResponse } from "../../controllers/auth/utility/responseHelper.js";
+import { verifyAccessJWT } from "../../utility/jwtHelper.js";
+import { buildErrorResponse } from "../../utility/responseHelper.js";
 
 // Middleware to authenticate the user by verifying JWT
 export const authMiddleware = (req, res, next) => {

@@ -2,7 +2,7 @@
 import express from "express";
 import { loginUser, registerUser } from "../controllers/auth/authController.js";
 import { authMiddleware } from "../middleware/authMiddleware/authMiddleware.js";
-import { buildSuccessResponse } from "../controllers/auth/utility/responseHelper.js";
+import { buildSuccessResponse } from "../utility/responseHelper.js";
 
 const authRouter = express.Router();
 
