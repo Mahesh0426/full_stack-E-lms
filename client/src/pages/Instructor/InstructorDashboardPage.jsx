@@ -5,10 +5,13 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/authContect";
 import { BarChart, Book, LogOut } from "lucide-react";
 import React, { useContext, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const InstructorDashboardPage = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const { handleResetCredentials } = useContext(AuthContext);
+  // Toast hook
+  const { toast } = useToast();
 
   const menuItems = [
     {
@@ -35,6 +38,12 @@ const InstructorDashboardPage = () => {
   const handleLogout = () => {
     handleResetCredentials();
     sessionStorage.clear();
+    // Show error toast
+    toast({
+      title: "Success",
+      description: "bye bye see you again!!",
+      variant: "success",
+    });
   };
 
   return (

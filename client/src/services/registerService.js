@@ -32,3 +32,17 @@ export const checkAuthService = async () => {
 //     throw error;
 //   }
 // };
+
+//media uolpad
+export const mediaUploadService = async (formData, onProgressCallBack) => {
+  const data = await axiosInstance.post("/api/media/upload", formData, {
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total
+      );
+      onProgressCallBack(percentCompleted);
+    },
+  });
+
+  return data.data;
+};

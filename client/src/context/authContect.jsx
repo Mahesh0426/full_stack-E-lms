@@ -10,10 +10,13 @@ import {
   registerService,
 } from "@/services/registerService";
 import { createContext, useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
+  //toast hook
+  const { toast } = useToast();
   const [logInFormData, setLogInFormData] = useState(initialLoginFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({ authenticate: false, user: null });
@@ -28,16 +31,40 @@ export default function AuthProvider({ children }) {
   //  function to handle the registration
   const handleRegister = async (e) => {
     e.preventDefault();
-    const response = await registerService(signUpFormData);
 
-    if (response.status === "success") {
-      console.log("Registration successful!", response);
+    try {
+      const response = await registerService(signUpFormData);
+
+      if (response.status === "success") {
+        toast({
+          title: "Success",
+          description: response.message,
+          variant: "success",
+        });
+      } else {
+        // Show error toast if the response status is not success
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      // Catch any error that occurs during the API call
+      toast({
+        title: "Error",
+        description:
+          error?.response?.data?.message ||
+          "Something went wrong during registration.",
+        variant: "destructive",
+      });
     }
   };
 
   //function to handle login
   const handleLogin = async (e) => {
     e.preventDefault();
+
     const response = await loginService(logInFormData);
 
     if (response.status === "success") {
@@ -49,7 +76,20 @@ export default function AuthProvider({ children }) {
 
       // Update auth state with user information
       updateAuthState(true, user);
+
+      // Show success toast
+      toast({
+        title: "Success",
+        description: response.message || "Login successful!",
+        variant: "success",
+      });
     } else {
+      // Show error toast
+      toast({
+        title: "Error",
+        description: response.message || "Login failed.",
+        variant: "destructive",
+      });
       updateAuthState(false, null);
     }
   };
