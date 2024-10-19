@@ -7,7 +7,10 @@ import { Switch } from "@/components/ui/switch";
 import VideoPlayer from "@/components/video-Player/VideoPlayer";
 import { courseCurriculumInitialFormData } from "@/config/signUpFormControls";
 import { InstructorContext } from "@/context/instructor-context";
-import { mediaUploadService } from "@/services/registerService";
+import {
+  mediaDeleteService,
+  mediaUploadService,
+} from "@/services/registerService";
 import React, { useContext } from "react";
 
 const CourseCurriculum = () => {
@@ -21,6 +24,18 @@ const CourseCurriculum = () => {
     mediaUploadProgressPercentage,
     setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
+
+  //validate courseCurriculumFormDaa
+  const isCourseCurriculumFormDataValid = () => {
+    return courseCurriculumFormData.every((item) => {
+      return (
+        item &&
+        typeof item === "object" &&
+        item.title.trim() !== "" &&
+        item.videoUrl.trim() !== ""
+      );
+    });
+  };
 
   //function to handle new course
   const handleNewLecture = () => {
@@ -55,6 +70,24 @@ const CourseCurriculum = () => {
 
     setCourseCurriculumFormData(copyCurriculumFormData);
     // console.log("handleFreePreviewChange:", copyCurriculumFormData);
+  };
+
+  //  function to handle replace video
+  const handleReplaceVideo = async (currentIndex) => {
+    const copyCurriculumFormData = [...courseCurriculumFormData];
+    const getCurrentVideoPublicId =
+      copyCurriculumFormData[currentIndex].public_id;
+
+    const response = await mediaDeleteService(getCurrentVideoPublicId);
+    console.log("deleted", response);
+    if (response.status === "success") {
+      copyCurriculumFormData[currentIndex] = {
+        ...copyCurriculumFormData[currentIndex],
+        videoUrl: "",
+        public_id: "",
+      };
+      setCourseCurriculumFormData(copyCurriculumFormData);
+    }
   };
 
   // function to handle Single Lecture Upload
@@ -98,7 +131,14 @@ const CourseCurriculum = () => {
           <CardTitle>Create Course Curriculum</CardTitle>
         </CardHeader>
         <CardContent>
-          <Button onClick={handleNewLecture}>Add Lecture</Button>
+          <Button
+            disabled={
+              !isCourseCurriculumFormDataValid() || isMediaUploadProgress
+            }
+            onClick={handleNewLecture}
+          >
+            Add Lecture
+          </Button>
 
           {/* progress bar */}
           {isMediaUploadProgress ? (
@@ -143,7 +183,9 @@ const CourseCurriculum = () => {
                         width="450px"
                         height="200px"
                       />
-                      <Button>Replace Video</Button>
+                      <Button onClick={() => handleReplaceVideo(index)}>
+                        Replace Video
+                      </Button>
                       <Button className="bg-red-900">Delete Lecture</Button>
                     </div>
                   ) : (
