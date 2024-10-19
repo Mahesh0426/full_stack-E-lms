@@ -30,10 +30,12 @@ const uploadMediaToCloudinary = async (filepath) => {
   }
 };
 
-//delete a local file from Cloudinary
+// Delete a local file from Cloudinary
 const deleteMediaFromCloudinary = async (publicId) => {
   try {
-    const result = await cloudinary.uploader.destroy(publicId);
+    const result = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "video", // Specify the resource type
+    });
     if (result.result === "ok") {
       return true;
     } else {
