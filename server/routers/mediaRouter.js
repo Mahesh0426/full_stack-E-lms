@@ -41,7 +41,7 @@ mediaRouter.delete("/delete/:id", async (req, res) => {
 
     const result = await deleteMediaFromCloudinary(id);
     if (result) {
-      buildSuccessResponse(res, null, "File deleted successfully");
+      buildSuccessResponse(res, result, "File deleted successfully");
     } else {
       buildErrorResponse(res, "File not found", 404);
     }

@@ -34,7 +34,7 @@ const uploadMediaToCloudinary = async (filepath) => {
 const deleteMediaFromCloudinary = async (publicId) => {
   try {
     const result = await cloudinary.uploader.destroy(publicId, {
-      resource_type: "video", // Specify the resource type
+      resource_type: "video",
     });
     if (result.result === "ok") {
       return true;
