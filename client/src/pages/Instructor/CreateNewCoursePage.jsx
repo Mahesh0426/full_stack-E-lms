@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import CourseCurriculum from "@/components/instructor-view/courses/create-New-Course/CourseCurriculum";
 import CourseLanding from "@/components/instructor-view/courses/create-New-Course/CourseLanding";
 import CourseSetting from "@/components/instructor-view/courses/create-New-Course/CourseSetting";
@@ -13,6 +13,7 @@ import {
   courseLandingInitialFormData,
 } from "@/config/signUpFormControls";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CreateNewCoursePage = () => {
   const {
@@ -20,9 +21,15 @@ const CreateNewCoursePage = () => {
     courseCurriculumFormData,
     setCourseLandingFormData,
     setCourseCurriculumFormData,
+    currentEditedCourseId,
+    setCurrentEditedCourseId,
   } = useContext(InstructorContext);
 
   const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const params = useParams();
+
+  console.log("params", params);
 
   // Helper function to check if value is empty
   const isEmpty = (value) => {
@@ -63,7 +70,7 @@ const CreateNewCoursePage = () => {
   // function to handle create course
   const handleOnSubmit = async () => {
     const courseSubmittedFormData = {
-      instructorId: auth?.user?._id,
+      instructorId: auth?.user?.id,
       instructorName: auth?.user?.userName,
       instructorEmail: auth?.user?.email,
       date: new Date(),
@@ -72,6 +79,7 @@ const CreateNewCoursePage = () => {
       curriculum: courseCurriculumFormData,
       isPublised: true,
     };
+
     console.log("courseSubmittedFormData", courseSubmittedFormData);
 
     const response = await addNewCourseService(courseSubmittedFormData);
@@ -83,8 +91,19 @@ const CreateNewCoursePage = () => {
       });
       setCourseLandingFormData(courseLandingInitialFormData);
       setCourseCurriculumFormData(courseCurriculumInitialFormData);
+      navigate(-1);
     }
   };
+
+  useEffect(() => {
+    console.log("currentEditedCourseId", currentEditedCourseId);
+  }, [currentEditedCourseId]);
+
+  useEffect(() => {
+    if (params?.courseId) setCurrentEditedCourseId(params?.courseId);
+  }, [params?.courseId]);
+
+  console.log(params, currentEditedCourseId, "params");
 
   return (
     <div className="container mx-auto p-4">

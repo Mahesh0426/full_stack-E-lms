@@ -3,15 +3,33 @@ import InstructorDashboard from "@/components/instructor-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/authContect";
+import { InstructorContext } from "@/context/instructor-context";
+import { toast } from "@/hooks/use-toast";
+import { fetchInstructorCourseListService } from "@/services/registerService";
 import { BarChart, Book, LogOut } from "lucide-react";
-import React, { useContext, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import React, { useContext, useEffect, useState } from "react";
 
 const InstructorDashboardPage = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const { handleResetCredentials } = useContext(AuthContext);
-  // Toast hook
-  const { toast } = useToast();
+
+  const { instructorCourseList, setInstructorCourseList } =
+    useContext(InstructorContext);
+
+  //  function fetch all the courses
+  const fetchAllCourses = async () => {
+    const response = await fetchInstructorCourseListService();
+
+    if (response.status === "success") {
+      setInstructorCourseList(response?.data);
+    }
+    console.log(response);
+  };
+
+  //use effect to fetch all courses
+  useEffect(() => {
+    fetchAllCourses();
+  }, []);
 
   const menuItems = [
     {
@@ -24,7 +42,7 @@ const InstructorDashboardPage = () => {
       icon: Book,
       label: "Courses",
       value: "courses",
-      component: <InstructorCourses />,
+      component: <InstructorCourses listOfCourse={instructorCourseList} />,
     },
     {
       icon: LogOut,

@@ -48,6 +48,16 @@ function App() {
           }
         />
         <Route
+          path="/instructor/edit-course/:courseId"
+          element={
+            <RouteGuard
+              element={<CreateNewCoursePage />}
+              authenticated={auth?.authenticate}
+              user={auth?.user}
+            />
+          }
+        />
+        <Route
           path="/"
           element={
             <RouteGuard

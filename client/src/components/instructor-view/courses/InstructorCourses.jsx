@@ -8,11 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { Edit, Trash2 } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const InstructorCourses = () => {
+const InstructorCourses = (props) => {
+  const { listOfCourse } = props;
+
   const navigate = useNavigate();
 
   return (
@@ -42,21 +45,33 @@ const InstructorCourses = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    ReactJs Full Course
-                  </TableCell>
-                  <TableCell>100</TableCell>
-                  <TableCell>$500 Card</TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="sm">
-                      <Edit className="h-6 w-6" />
-                    </Button>
-                    <Button variant="ghost" size="sm">
-                      <Trash2 className="h-6 w-6" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                {listOfCourse && listOfCourse.length > 0
+                  ? listOfCourse.map((course, index) => (
+                      <TableRow key={course?._id || index}>
+                        <TableCell className="font-medium">
+                          {course?.title}
+                        </TableCell>
+                        <TableCell>{course?.students?.length}</TableCell>
+                        <TableCell>{course?.pricing}</TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            onClick={() => {
+                              navigate(
+                                `/instructor/edit-course/${course?._id}`
+                              );
+                            }}
+                            variant="ghost"
+                            size="sm"
+                          >
+                            <Edit className="h-6 w-6" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Trash2 className="h-6 w-6" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : null}
               </TableBody>
             </Table>
           </div>
