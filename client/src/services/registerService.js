@@ -52,3 +52,28 @@ export const mediaDeleteService = async (id) => {
   const data = await axiosInstance.delete(`/api/media/delete/${id}`);
   return data.data;
 };
+
+//GET | fetch  all courss
+export const fetchInstructorCourseListService = async () => {
+  const data = await axiosInstance.get("/api/course/get");
+  return data.data;
+};
+
+//  POST | create  new course
+export const addNewCourseService = async (formData) => {
+  const data = await axiosInstance.post("/api/course/add", formData);
+  return data.data;
+};
+
+//GET | fetch  course details
+export const fetchInstructorCourseDetailsService = async (id) => {
+  const data = await axiosInstance.get(`/api/course/get/details/${id}`);
+  return data.data;
+};
+//  PUT | update course details
+export const updateCourseByIdService = async (id, formData) => {
+  const data = await axiosInstance.put(`/api/course/update/${id}`, formData);
+  return data.data;
+};
+
+// delete course

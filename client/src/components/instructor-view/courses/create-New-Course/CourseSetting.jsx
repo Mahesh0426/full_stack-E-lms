@@ -68,7 +68,7 @@ const CourseSetting = () => {
             />
           ) : (
             <div className="flex flex-col gap-3">
-              <Label>Upload Course Image</Label>
+              <Label>Upload Course Thumnail</Label>
               <Input
                 type="file"
                 accept="image/*"

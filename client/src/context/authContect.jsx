@@ -142,7 +142,7 @@ export default function AuthProvider({ children }) {
     checkAuthUser();
   }, []);
 
-  // console.log("auth", auth);
+  console.log("auth", auth);
 
   return (
     <AuthContext.Provider
