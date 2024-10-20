@@ -10,9 +10,11 @@ const lectureSchema = new mongoose.Schema({
 const courseSchema = new mongoose.Schema(
   {
     instructorId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
+    },
+    instructorEmail: {
+      type: String,
       required: true,
-      ref: "User",
     },
     instructorName: {
       type: String,
@@ -34,7 +36,7 @@ const courseSchema = new mongoose.Schema(
     level: {
       type: String,
       required: true,
-      enum: ["Beginner", "Intermediate", "Advanced"],
+      // enum: ["Beginner", "Intermediate", "Advanced"],
     },
     primaryLanguage: {
       type: String,
@@ -67,7 +69,7 @@ const courseSchema = new mongoose.Schema(
     },
     students: [
       {
-        studentId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        studentId: String,
         studentName: String,
         studentEmail: { type: String, required: true },
         paidAmount: Number,
