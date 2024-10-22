@@ -8,13 +8,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  courseCurriculumInitialFormData,
+  courseLandingInitialFormData,
+} from "@/config/signUpFormControls";
+import { InstructorContext } from "@/context/instructor-context";
 
 import { Edit, Trash2 } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InstructorCourses = (props) => {
   const { listOfCourse } = props;
+  const {
+    setCurrentEditedCourseId,
+    setCourseLandingFormData,
+    setCourseCurriculumFormData,
+  } = useContext(InstructorContext);
 
   const navigate = useNavigate();
 
@@ -27,7 +37,12 @@ const InstructorCourses = (props) => {
             All courses
           </CardTitle>
           <Button
-            onClick={() => navigate("/instructor/create-new-course")}
+            onClick={() => {
+              setCurrentEditedCourseId(null);
+              setCourseLandingFormData(courseLandingInitialFormData);
+              setCourseCurriculumFormData(courseCurriculumInitialFormData);
+              navigate("/instructor/create-new-course");
+            }}
             className="p-6"
           >
             Create new course

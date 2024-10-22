@@ -4,26 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/authContect";
 import { InstructorContext } from "@/context/instructor-context";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
+
 import { fetchInstructorCourseListService } from "@/services/registerService";
 import { BarChart, Book, LogOut } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
 const InstructorDashboardPage = () => {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("dashboard");
   const { handleResetCredentials } = useContext(AuthContext);
 
   const { instructorCourseList, setInstructorCourseList } =
     useContext(InstructorContext);
 
-  //  function fetch all the courses
+  //  function  to get | fetch all the courses
   const fetchAllCourses = async () => {
     const response = await fetchInstructorCourseListService();
 
     if (response.status === "success") {
       setInstructorCourseList(response?.data);
     }
-    console.log(response);
+    console.log("fetchAllCourses", response);
   };
 
   //use effect to fetch all courses
@@ -56,7 +58,6 @@ const InstructorDashboardPage = () => {
   const handleLogout = () => {
     handleResetCredentials();
     sessionStorage.clear();
-    // Show error toast
     toast({
       title: "Success",
       description: "bye bye see you again!!",

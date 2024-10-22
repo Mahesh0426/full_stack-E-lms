@@ -26,7 +26,7 @@ const getAllCourses = async (req, res) => {
     return buildSuccessResponse(
       res,
       coursesList,
-      "Courses retrieved successfully!"
+      "Courses fetched successfully!"
     );
   } catch (error) {
     console.error("Error while getting courses:", error);

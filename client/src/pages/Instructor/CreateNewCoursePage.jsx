@@ -7,15 +7,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InstructorContext } from "@/context/instructor-context";
 import { AuthContext } from "@/context/authContect";
-import { addNewCourseService } from "@/services/registerService";
+import {
+  addNewCourseService,
+  fetchInstructorCourseDetailsService,
+  updateCourseByIdService,
+} from "@/services/registerService";
 import {
   courseCurriculumInitialFormData,
   courseLandingInitialFormData,
 } from "@/config/signUpFormControls";
-import { toast } from "@/hooks/use-toast";
+
 import { useNavigate, useParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const CreateNewCoursePage = () => {
+  const { toast } = useToast();
   const {
     courseLandingFormData,
     courseCurriculumFormData,
@@ -80,9 +86,14 @@ const CreateNewCoursePage = () => {
       isPublised: true,
     };
 
-    console.log("courseSubmittedFormData", courseSubmittedFormData);
+    const response =
+      currentEditedCourseId !== null
+        ? await updateCourseByIdService(
+            currentEditedCourseId,
+            courseSubmittedFormData
+          )
+        : await addNewCourseService(courseSubmittedFormData);
 
-    const response = await addNewCourseService(courseSubmittedFormData);
     if (response.status === "success") {
       toast({
         title: "Success",
@@ -92,18 +103,52 @@ const CreateNewCoursePage = () => {
       setCourseLandingFormData(courseLandingInitialFormData);
       setCourseCurriculumFormData(courseCurriculumInitialFormData);
       navigate(-1);
+      setCurrentEditedCourseId(null);
     }
+    // console.log("courseSubmittedFormData", courseSubmittedFormData);
+  };
+
+  // function to fetch current course details
+  const fetchCurrentCourseDetails = async () => {
+    const response = await fetchInstructorCourseDetailsService(
+      currentEditedCourseId
+    );
+    if (response.status === "success") {
+      // Set course landing and curriculum form data with existing data
+      // const setCourseFormData = {
+      //   ...courseLandingInitialFormData,
+      //   ...response?.data
+      // };
+      const setCourseFormData = Object.keys(
+        courseLandingInitialFormData
+      ).reduce((acc, key) => {
+        acc[key] = response?.data[key] || courseLandingInitialFormData[key];
+        return acc;
+      }, {});
+
+      console.log(
+        "setCourseFormData :",
+        setCourseFormData,
+        " response?.data:",
+        response?.data
+      );
+      setCourseLandingFormData(setCourseFormData);
+      setCourseCurriculumFormData(response?.data?.curriculum);
+    }
+
+    // console.log("fetchCurrentCourseDetails", response);
   };
 
   useEffect(() => {
-    console.log("currentEditedCourseId", currentEditedCourseId);
+    if (currentEditedCourseId !== null) fetchCurrentCourseDetails();
+    // console.log("currentEditedCourseId", currentEditedCourseId);
   }, [currentEditedCourseId]);
 
   useEffect(() => {
     if (params?.courseId) setCurrentEditedCourseId(params?.courseId);
   }, [params?.courseId]);
 
-  console.log(params, currentEditedCourseId, "params");
+  // console.log(params, currentEditedCourseId, "params");
 
   return (
     <div className="container mx-auto p-4">
