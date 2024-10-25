@@ -64,7 +64,7 @@ const CourseSetting = () => {
             <img
               src={courseLandingFormData.image}
               alt="Course Image"
-              className="w-full h-auto object-cover rounded-md"
+              className="max-w-full  max-h-full object-cover rounded-md"
             />
           ) : (
             <div className="flex flex-col gap-3">

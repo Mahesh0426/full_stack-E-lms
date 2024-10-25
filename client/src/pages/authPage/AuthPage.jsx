@@ -1,4 +1,5 @@
 import CommonForm from "@/components/common-form/CommonForm";
+import LoadingSpinner from "@/components/Loading-Spinner/LoadingSpinner";
 import {
   Card,
   CardContent,
@@ -28,6 +29,7 @@ const AuthPage = () => {
     setSignUpFormData,
     handleRegister,
     handleLogin,
+    isLoading,
   } = useContext(AuthContext);
 
   //hanlde on Tab change
@@ -89,10 +91,10 @@ const AuthPage = () => {
               <CardContent className="space-y-2">
                 <CommonForm
                   formControls={LogInFormControls}
-                  buttonText={"Login"}
+                  buttonText={isLoading ? <LoadingSpinner /> : "Login"}
                   formData={logInFormData}
                   setFormData={setLogInFormData}
-                  isButtonDisabled={!checkIfLoginValid()}
+                  isButtonDisabled={!checkIfLoginValid() || isLoading}
                   handleOnSubmit={handleLogin}
                 />
               </CardContent>
@@ -113,10 +115,10 @@ const AuthPage = () => {
               <CardContent className="space-y-2">
                 <CommonForm
                   formControls={signUpFormControls}
-                  buttonText={"Sign up"}
+                  buttonText={isLoading ? <LoadingSpinner /> : "Sign up"}
                   formData={signUpFormData}
                   setFormData={setSignUpFormData}
-                  isButtonDisabled={!checkIfSignUpValid()}
+                  isButtonDisabled={!checkIfSignUpValid() || isLoading}
                   handleOnSubmit={handleRegister}
                 />
               </CardContent>

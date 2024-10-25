@@ -5,14 +5,13 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/authContect";
 import { InstructorContext } from "@/context/instructor-context";
 import { useToast } from "@/hooks/use-toast";
-
 import { fetchInstructorCourseListService } from "@/services/registerService";
 import { BarChart, Book, LogOut } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
 const InstructorDashboardPage = () => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("courses");
   const { handleResetCredentials } = useContext(AuthContext);
 
   const { instructorCourseList, setInstructorCourseList } =

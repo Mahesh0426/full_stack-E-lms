@@ -14,12 +14,6 @@ export const loginService = async (formData) => {
   return data.data;
 };
 
-//check auth user
-export const checkAuthService = async () => {
-  const data = await axiosInstance.get("/api/user/check-auth");
-  return data.data;
-};
-
 // export const checkAuthService = async () => {
 //   const accessToken = sessionStorage.getItem("accessToken");
 //   console.log("Token being sent:", accessToken);
@@ -32,10 +26,28 @@ export const checkAuthService = async () => {
 //     throw error;
 //   }
 // };
+//check auth user
+export const checkAuthService = async () => {
+  const data = await axiosInstance.get("/api/user/check-auth");
+  return data.data;
+};
 
 //media uolpad
 export const mediaUploadService = async (formData, onProgressCallBack) => {
   const data = await axiosInstance.post("/api/media/upload", formData, {
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total
+      );
+      onProgressCallBack(percentCompleted);
+    },
+  });
+
+  return data.data;
+};
+// bulk- media uolpad
+export const mediaBulkUploadService = async (formData, onProgressCallBack) => {
+  const data = await axiosInstance.post("/api/media/bulk-upload", formData, {
     onUploadProgress: (progressEvent) => {
       const percentCompleted = Math.round(
         (progressEvent.loaded * 100) / progressEvent.total
@@ -76,4 +88,14 @@ export const updateCourseByIdService = async (id, formData) => {
   return data.data;
 };
 
-// delete course
+//GET | fetch  all  student courss
+export const fetchStudentViewCourseListService = async () => {
+  const data = await axiosInstance.get("/api/student/get");
+  return data.data;
+};
+
+//GET | fetch  course details
+export const tchStudentViewCourseListDetailsService = async (courseId) => {
+  const data = await axiosInstance.get(`/api/student/get/details/${courseId}`);
+  return data.data;
+};
