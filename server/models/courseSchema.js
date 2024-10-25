@@ -10,7 +10,8 @@ const lectureSchema = new mongoose.Schema({
 const courseSchema = new mongoose.Schema(
   {
     instructorId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     instructorEmail: {
       type: String,
@@ -18,7 +19,6 @@ const courseSchema = new mongoose.Schema(
     },
     instructorName: {
       type: String,
-      required: true,
     },
     date: {
       type: Date,
@@ -77,7 +77,7 @@ const courseSchema = new mongoose.Schema(
       },
     ],
     curriculum: [lectureSchema],
-    isPublised: Boolean,
+    isPublished: Boolean,
   },
   {
     timestamps: true,

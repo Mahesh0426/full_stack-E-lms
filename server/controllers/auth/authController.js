@@ -57,7 +57,9 @@ const loginUser = async (req, res) => {
       // Generate and send back the access token and user data
       const accessToken = generateAccessJWT(
         checkUser.userEmail,
-        checkUser.role
+        checkUser.role,
+        checkUser._id,
+        checkUser.userName
       );
       return buildSuccessResponse(
         res,

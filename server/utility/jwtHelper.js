@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken";
 // node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 // access jwt: session table, exp:15min
-export const generateAccessJWT = (userEmail, userRole) => {
+export const generateAccessJWT = (userEmail, userRole, id, userName) => {
   return jwt.sign(
-    { email: userEmail, role: userRole },
+    { email: userEmail, role: userRole, _id: id, userName: userName },
     process.env.JWT_ACCESS_SECRET,
     {
       expiresIn: "200m",

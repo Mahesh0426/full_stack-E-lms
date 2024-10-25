@@ -30,19 +30,61 @@ const uploadMediaToCloudinary = async (filepath) => {
   }
 };
 
-// Delete a local file from Cloudinary
+// const deleteMediaFromCloudinary = async (publicId) => {
+//   console.log("Deleting media with publicId:", publicId);
+
+//   try {
+//     // Attempt to delete the video from Cloudinary with the correct resource_type
+//     const result = await cloudinary.uploader.destroy(publicId, {
+//       resource_type: "video",
+//     });
+
+//     // Check the result from Cloudinary
+//     if (result.result === "ok") {
+//       return true;
+//     } else {
+//       // Log the specific result message for troubleshooting
+//       console.error("Failed to delete media from Cloudinary:", result);
+//       throw new Error(`Cloudinary deletion failed: ${result.result}`);
+//     }
+//   } catch (error) {
+//     // Log the specific error message
+//     console.error("Cloudinary deletion error:", error.message || error);
+//     throw new Error("Error while deleting media from Cloudinary.");
+//   }
+// };
 const deleteMediaFromCloudinary = async (publicId) => {
+  console.log("Attempting to delete media with publicId:", publicId);
+
   try {
+    // Attempt to delete the video from Cloudinary
     const result = await cloudinary.uploader.destroy(publicId, {
-      resource_type: "video",
+      resource_type: "video", // Ensure you're deleting a video
     });
-    if (result.result === "ok") {
+
+    // Log the result for debugging
+    console.log("Cloudinary deletion result:", result);
+
+    // Check the result of the Cloudinary deletion
+    if (result.result === "ok" || result.result === "deleted") {
+      // Success case
       return true;
+    } else if (result.result === "not found") {
+      // Log media not found for debugging
+      console.warn(
+        `Media with publicId ${publicId} was not found in Cloudinary`
+      );
+      return false; // Return false to indicate failure
     } else {
-      throw new Error("Failed to delete media from Cloudinary.");
+      // Log any unexpected results for troubleshooting
+      console.error("Unexpected Cloudinary deletion result:", result);
+      throw new Error(`Cloudinary deletion failed: ${result.result}`);
     }
   } catch (error) {
-    console.error("Cloudinary deletion error:", error);
+    // Log any errors that occur during deletion
+    console.error("Cloudinary deletion error:", error.message || error);
+
+    // Rethrow the error to be handled by the caller
     throw new Error("Error while deleting media from Cloudinary.");
   }
 };

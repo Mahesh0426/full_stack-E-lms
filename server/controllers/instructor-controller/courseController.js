@@ -23,11 +23,7 @@ const addNewCourse = async (req, res) => {
 const getAllCourses = async (req, res) => {
   try {
     const coursesList = await Course.find({});
-    return buildSuccessResponse(
-      res,
-      coursesList,
-      "Courses fetched successfully!"
-    );
+    return buildSuccessResponse(res, coursesList, "Course added successfully!");
   } catch (error) {
     console.error("Error while getting courses:", error);
     return buildErrorResponse(res, "Error while retrieving courses", 500);
