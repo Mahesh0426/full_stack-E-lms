@@ -5,6 +5,7 @@ export const signUpFormControls = [
     type: "text",
     placeholder: "Enter your full Name",
     componentType: "input",
+
     required: true,
   },
   {
@@ -48,6 +49,7 @@ export const LogInFormControls = [
     type: "password",
     placeholder: "Enter  your password",
     componentType: "input",
+    autoComplete: "current-password",
     required: true,
   },
 ];
@@ -194,3 +196,18 @@ export const courseCurriculumInitialFormData = [
     public_id: "",
   },
 ];
+
+// sort option
+export const sortOptions = [
+  { id: "price-lowtohigh", label: "Price: Low to High" },
+  { id: "price-hightolow", label: "Price: High to Low" },
+  { id: "title-atoz", label: "Title: A to Z" },
+  { id: "title-ztoa", label: "Title: Z to A" },
+];
+
+//filter options
+export const filterOptions = {
+  category: courseCategories,
+  level: courseLevelOptions,
+  primaryLanguage: languageOptions,
+};

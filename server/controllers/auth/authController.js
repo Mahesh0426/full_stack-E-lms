@@ -64,9 +64,9 @@ const loginUser = async (req, res) => {
       return buildSuccessResponse(
         res,
         {
-          token: accessToken,
+          accessToken,
           user: {
-            id: checkUser._id,
+            _id: checkUser._id,
             email: checkUser.userEmail,
             role: checkUser.role,
             userName: checkUser.userName,

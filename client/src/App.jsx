@@ -10,6 +10,7 @@ import StudentHomePage from "./pages/Student/homePage";
 import PageNotFound from "./pages/not-foundPage/notFoundPage";
 import CreateNewCoursePage from "./pages/Instructor/CreateNewCoursePage";
 import { Toaster } from "./components/ui/toaster";
+import StudentViewCoursePage from "./pages/Student/CoursePage";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -69,6 +70,7 @@ function App() {
         >
           <Route path="home" element={<StudentHomePage />} />
           <Route path="" element={<StudentHomePage />} />
+          <Route path="/courses" element={<StudentViewCoursePage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
