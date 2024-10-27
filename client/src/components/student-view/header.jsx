@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { AuthContext } from "@/context/authContect";
+import { toast } from "@/hooks/use-toast";
 
 const Header = () => {
   const { handleResetCredentials } = useContext(AuthContext);
@@ -13,6 +14,11 @@ const Header = () => {
   const handleLogout = () => {
     handleResetCredentials();
     sessionStorage.clear();
+    toast({
+      title: "Success",
+      description: "bye bye see you again!!",
+      variant: "success",
+    });
   };
   return (
     <header className=" flex items-center justify-between p-4 border-b relative">

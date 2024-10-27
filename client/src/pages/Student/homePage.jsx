@@ -13,7 +13,7 @@ const StudentHomePage = () => {
   const fetchStudentsViewCourses = async () => {
     const response = await fetchStudentViewCourseListService();
 
-    console.log("response", response);
+    // console.log("response", response);
     if (response?.status === "success") {
       setStudentViewCoursesList(response.data);
       return;
