@@ -70,7 +70,7 @@ const StudentHomePage = () => {
             studentViewCoursesList.map((courseItem) => (
               <div
                 key={courseItem?._id}
-                className="border rounded-lg overflow-hidden shadow cursor-pointer"
+                className="border rounded-lg overflow-hidden shadow cursor-pointer transition-all duration-300 ease-in hover:shadow-lg hover:scale-105"
               >
                 <img
                   src={courseItem?.image}
@@ -82,7 +82,7 @@ const StudentHomePage = () => {
                 <div className="p-4">
                   <h3 className="font-bold mb-2">{courseItem?.title}</h3>
                   <p className="text-sm text-gray-700 mb-2">
-                    {courseItem?.instructorEmail}
+                    {courseItem?.userName}
                   </p>
                   <p className="font-bold text-[16px]">
                     ${courseItem?.pricing}

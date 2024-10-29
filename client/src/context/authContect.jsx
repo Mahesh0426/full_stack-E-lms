@@ -69,10 +69,14 @@ export default function AuthProvider({ children }) {
     startLoading();
     try {
       const response = await loginService(logInFormData);
+      console.log("response", response);
 
       // Assuming response.data contains user details
       if (response.status === "success") {
-        const { token, user } = response.data;
+        const { accessToken: token, user } = response.data;
+        console.log(token);
+        console.log(user);
+
         // Save token to sessionStorage
         sessionStorage.setItem("accessToken", token);
 
@@ -112,6 +116,8 @@ export default function AuthProvider({ children }) {
         const userData = {
           email: response.data.email,
           role: response.data.role || "user",
+          userName: response.data.userName,
+          _id: response.data._id,
         };
         updateAuthState(true, userData);
       } else {

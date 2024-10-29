@@ -6,6 +6,8 @@ const RouteGuard = (props) => {
 
   //   console.log("Authenticated:", authenticated);
   //   console.log("User:", user);
+  // console.log("Current Path:", location.pathname);
+  // console.log("User Role:", user?.role);
 
   // Check if User is Not Authenticated
   if (!authenticated && !location.pathname.includes("/auth")) {

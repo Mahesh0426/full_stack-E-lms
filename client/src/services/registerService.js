@@ -89,8 +89,8 @@ export const updateCourseByIdService = async (id, formData) => {
 };
 
 //GET | fetch  all  student courss
-export const fetchStudentViewCourseListService = async () => {
-  const data = await axiosInstance.get("/api/student/get");
+export const fetchStudentViewCourseListService = async (query) => {
+  const data = await axiosInstance.get(`/api/student/get?${query}`);
   return data.data;
 };
 

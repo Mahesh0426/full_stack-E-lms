@@ -3,18 +3,34 @@ import {
   buildSuccessResponse,
 } from "../../utility/responseHelper.js";
 import Course from "../../models/courseSchema.js";
+import {
+  buildFilters,
+  buildSortParam,
+} from "../../utility/filter&SortingHelper.js";
 
 //get all the courses
 export const getStudentViewCourses = async (req, res) => {
   try {
-    const courseList = await Course.find({});
+    // Destructure query params with default values
+    const {
+      category = "",
+      level = "",
+      primaryLanguage = "",
+      sortBy = "price-lowtohigh",
+    } = req.query;
 
-    courseList?.length
-      ? buildSuccessResponse(res, courseList, "fetched course successfully!!")
-      : buildErrorResponse(res, "No courses available!!", 404);
+    // Build filters and sorting options using utility functions
+    const filters = buildFilters(category, level, primaryLanguage);
+    const sortParam = buildSortParam(sortBy);
+
+    // Query the database with filters and sorting
+    const courseList = await Course.find(filters).sort(sortParam);
+
+    // Respond with success if courses are found
+    buildSuccessResponse(res, courseList, "Courses fetched successfully!");
   } catch (error) {
-    console.log(error);
-    buildErrorResponse(res, "Some error occurred!!", 500);
+    console.error("Error fetching courses:", error);
+    buildErrorResponse(res, "Some error occurred while fetching courses", 500);
   }
 };
 
