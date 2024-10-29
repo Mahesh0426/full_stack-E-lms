@@ -11,7 +11,6 @@ authRouter.post("/", registerUser);
 authRouter.post("/login", loginUser);
 authRouter.get("/check-auth", authMiddleware, (req, res) => {
   const user = req.user;
-  console.log("req.user", req.user);
 
   buildSuccessResponse(res, user, "Authenticated User !!");
 });
