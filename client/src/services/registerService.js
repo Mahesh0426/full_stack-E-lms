@@ -95,7 +95,7 @@ export const fetchStudentViewCourseListService = async (query) => {
 };
 
 //GET | fetch  course details
-export const tchStudentViewCourseListDetailsService = async (courseId) => {
+export const fetchStudentViewCourseListDetailsService = async (courseId) => {
   const data = await axiosInstance.get(`/api/student/get/details/${courseId}`);
   return data.data;
 };
