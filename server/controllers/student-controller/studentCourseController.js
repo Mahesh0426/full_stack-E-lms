@@ -2,7 +2,7 @@ import {
   buildErrorResponse,
   buildSuccessResponse,
 } from "../../utility/responseHelper.js";
-import Course from "../../models/courseSchema.js";
+import Course from "../../model/courseSchema.js";
 import {
   buildFilters,
   buildSortParam,

@@ -7,6 +7,7 @@ import authRouter from "./routers/authRouter.js";
 import mediaRouter from "./routers/mediaRouter.js";
 import courseRouter from "./routers/courseRouter.js";
 import studentRouter from "./routers/studentCourseRouter.js";
+import orderRouter from "./routers/orderRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -42,6 +43,7 @@ app.use("/api/user", authRouter);
 app.use("/api/media", mediaRouter);
 app.use("/api/course", courseRouter);
 app.use("/api/student/", studentRouter);
+app.use("/api/order/", orderRouter);
 
 // start server
 app.listen(PORT, (error) => {

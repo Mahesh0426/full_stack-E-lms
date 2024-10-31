@@ -99,3 +99,15 @@ export const fetchStudentViewCourseListDetailsService = async (courseId) => {
   const data = await axiosInstance.get(`/api/student/get/details/${courseId}`);
   return data.data;
 };
+
+//  POST | create  payment
+export const createPaymentService = async (payloadData) => {
+  const data = await axiosInstance.post("/api/order/create", payloadData);
+  return data.data;
+};
+
+//  POST | capture payment and finalize order
+export const capturePaymentAndFinalizeOrderService = async (payloadData) => {
+  const data = await axiosInstance.post("/api/order/capture", payloadData);
+  return data.data;
+};

@@ -69,13 +69,11 @@ export default function AuthProvider({ children }) {
     startLoading();
     try {
       const response = await loginService(logInFormData);
-      console.log("response", response);
+      // console.log("response", response);
 
       // Assuming response.data contains user details
       if (response.status === "success") {
         const { accessToken: token, user } = response.data;
-        console.log(token);
-        console.log(user);
 
         // Save token to sessionStorage
         sessionStorage.setItem("accessToken", token);
@@ -140,7 +138,7 @@ export default function AuthProvider({ children }) {
     checkAuthUser();
   }, []);
 
-  console.log("auth", auth);
+  // console.log("auth", auth);
   return (
     <AuthContext.Provider
       value={{

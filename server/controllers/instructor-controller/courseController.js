@@ -1,4 +1,4 @@
-import Course from "../../models/courseSchema.js";
+import Course from "../../model/courseSchema.js";
 import {
   buildErrorResponse,
   buildSuccessResponse,

@@ -1,4 +1,4 @@
-import User from "../../models/userSchema.js";
+import User from "../../model/userSchema.js";
 import { comparePassword, hashPassword } from "../../utility/bcryptHelper.js";
 import { generateAccessJWT } from "../../utility/jwtHelper.js";
 import {
