@@ -107,7 +107,23 @@ export const createPaymentService = async (payloadData) => {
 };
 
 //  POST | capture payment and finalize order
-export const capturePaymentAndFinalizeOrderService = async (payloadData) => {
-  const data = await axiosInstance.post("/api/order/capture", payloadData);
+export const capturePaymentAndFinalizeOrderService = async (
+  paymentId,
+  payerId,
+  orderId
+) => {
+  const data = await axiosInstance.post("/api/order/capture", {
+    paymentId,
+    payerId,
+    orderId,
+  });
   return data.data;
 };
+
+// GET | Get my courses | private
+export const getMyBoughtCoursesService = async (studentId) => {
+  const data = await axiosInstance.get(`/api/my-courses/get/${studentId}`);
+  return data.data;
+};
+
+// POST | enroll in course | private

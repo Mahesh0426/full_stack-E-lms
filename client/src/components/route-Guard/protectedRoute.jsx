@@ -4,10 +4,10 @@ const RouteGuard = (props) => {
   const { element, authenticated, user } = props;
   const location = useLocation();
 
-  //   console.log("Authenticated:", authenticated);
-  //   console.log("User:", user);
-  // console.log("Current Path:", location.pathname);
-  // console.log("User Role:", user?.role);
+  // Allow access to the payment return route without authentication
+  if (location.pathname === "/payment-return") {
+    return <Fragment>{element}</Fragment>;
+  }
 
   // Check if User is Not Authenticated
   if (!authenticated && !location.pathname.includes("/auth")) {

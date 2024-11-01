@@ -12,6 +12,8 @@ import CreateNewCoursePage from "./pages/Instructor/CreateNewCoursePage";
 import { Toaster } from "./components/ui/toaster";
 import StudentViewCoursePage from "./pages/Student/CoursePage";
 import StudentViewCourseDetailsPage from "./pages/Student/CourseDetailsPage";
+import PaypalPaymentReturnPage from "./pages/Student/paymentReturnPage";
+import MyCoursesPage from "./pages/Student/myCoursesPage";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -76,6 +78,8 @@ function App() {
             path="course/details/:id"
             element={<StudentViewCourseDetailsPage />}
           />
+          <Route path="payment-return" element={<PaypalPaymentReturnPage />} />
+          <Route path="student-courses" element={<MyCoursesPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
