@@ -99,6 +99,13 @@ export const fetchStudentViewCourseListDetailsService = async (courseId) => {
   const data = await axiosInstance.get(`/api/student/get/details/${courseId}`);
   return data.data;
 };
+//GET | check  course details
+export const checkCoursePurchaseInfoService = async (courseId, studentId) => {
+  const data = await axiosInstance.get(
+    `/api/student/purchase-info/${courseId}/${studentId}`
+  );
+  return data.data;
+};
 
 //  POST | create  payment
 export const createPaymentService = async (payloadData) => {
@@ -126,4 +133,10 @@ export const getMyBoughtCoursesService = async (studentId) => {
   return data.data;
 };
 
-// POST | enroll in course | private
+//GET | progress-course details
+export const getCurrentCourseProgressService = async (userId, courseId) => {
+  const data = await axiosInstance.get(
+    `/api/course-progress/get/${userId}/${courseId}`
+  );
+  return data.data;
+};

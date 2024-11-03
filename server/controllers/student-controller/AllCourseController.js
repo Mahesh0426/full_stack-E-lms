@@ -7,6 +7,7 @@ import {
   buildFilters,
   buildSortParam,
 } from "../../utility/filter&SortingHelper.js";
+import StudentCourses from "../../model/studentSchema.js";
 
 //get all the courses
 export const getStudentViewCourses = async (req, res) => {
@@ -51,5 +52,33 @@ export const getStudentViewCoursesDetails = async (req, res) => {
   } catch (error) {
     console.log(error);
     buildErrorResponse(res, "Some error occurred", 500);
+  }
+};
+
+// Check if the course is purchased by the student
+export const checkCoursePurchaseInfo = async (req, res) => {
+  try {
+    const { id: courseId, studentId } = req.params;
+
+    // Fetch the student's courses
+    const studentCourses = await StudentCourses.findOne({ userId: studentId });
+
+    // Check if the student has purchased the course
+    const isCoursePurchased = studentCourses?.courses.some(
+      (item) => item.courseId === courseId
+    );
+
+    if (isCoursePurchased) {
+      buildSuccessResponse(res, true, "Course has already been purchased!");
+    } else {
+      buildSuccessResponse(res, false, "Course has not been purchased yet.");
+    }
+  } catch (error) {
+    console.error("Error checking course purchase info:", error);
+    buildErrorResponse(
+      res,
+      "Some error occurred while checking course purchase info.",
+      500
+    );
   }
 };

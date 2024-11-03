@@ -9,6 +9,7 @@ import courseRouter from "./routers/courseRouter.js";
 import studentRouter from "./routers/allCourseRouter.js";
 import orderRouter from "./routers/orderRouter.js";
 import myCoursesRouter from "./routers/myCoursesRouter.js";
+import CourseProgressRouter from "./routers/courseProgressRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -46,6 +47,7 @@ app.use("/api/course", courseRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/my-courses", myCoursesRouter);
+app.use("/api/course-progress", CourseProgressRouter);
 
 // start server
 app.listen(PORT, (error) => {
