@@ -2,12 +2,21 @@ import React, { useContext, useEffect } from "react";
 import banner from "../../assets/banner1.jpg";
 import { courseCategories } from "@/config/signUpFormControls";
 import { Button } from "@/components/ui/button";
-import { fetchStudentViewCourseListService } from "@/services/registerService";
+import {
+  checkCoursePurchaseInfoService,
+  fetchStudentViewCourseListService,
+} from "@/services/registerService";
 import { StudentContext } from "@/context/studentContext";
+import { AuthContext } from "@/context/authContect";
+import { useNavigate } from "react-router-dom";
 
 const StudentHomePage = () => {
   const { studentViewCoursesList, setStudentViewCoursesList } =
     useContext(StudentContext);
+
+  const { auth } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   // function to fetch  student courses
   const fetchStudentsViewCourses = async () => {
@@ -18,6 +27,36 @@ const StudentHomePage = () => {
       setStudentViewCoursesList(response.data);
       return;
     }
+  };
+
+  // function to handle to coursepage navigate
+  const handleNavigateToCoursesPage = (getCurrentId) => {
+    console.log("getCurrentId", getCurrentId);
+
+    sessionStorage.removeItem("filters");
+    const currentFilter = {
+      category: [getCurrentId],
+    };
+
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+
+    navigate("/courses");
+  };
+
+  // function to  handle course navigation
+  const handleCourseNavigate = async (getCurrentCourseId) => {
+    const response = await checkCoursePurchaseInfoService(
+      getCurrentCourseId,
+      auth?.user?._id
+    );
+    if (response.status === "success") {
+      if (response?.data) {
+        navigate(`/course-progress/${getCurrentCourseId}`);
+      } else {
+        navigate(`/course/details/${getCurrentCourseId}`);
+      }
+    }
+    // console.log("response", response);
   };
 
   // // useeffect to fetch all the courses
@@ -55,6 +94,7 @@ const StudentHomePage = () => {
               className="justify-start"
               variant="outline"
               key={categoryItem.id}
+              onClick={() => handleNavigateToCoursesPage(categoryItem.id)}
             >
               {categoryItem.label}
             </Button>
@@ -69,6 +109,7 @@ const StudentHomePage = () => {
           {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
             studentViewCoursesList.map((courseItem) => (
               <div
+                onClick={() => handleCourseNavigate(courseItem?._id)}
                 key={courseItem?._id}
                 className="border rounded-lg overflow-hidden shadow cursor-pointer transition-all duration-300 ease-in hover:shadow-lg hover:scale-105"
               >

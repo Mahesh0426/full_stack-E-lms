@@ -24,7 +24,7 @@ const InstructorDashboardPage = () => {
     if (response.status === "success") {
       setInstructorCourseList(response?.data);
     }
-    console.log("fetchAllCourses", response);
+    // console.log("fetchAllCourses", response);
   };
 
   //use effect to fetch all courses
@@ -37,7 +37,7 @@ const InstructorDashboardPage = () => {
       icon: BarChart,
       label: "Dashboard",
       value: "dashboard",
-      component: <InstructorDashboard />,
+      component: <InstructorDashboard listOfCourses={instructorCourseList} />,
     },
     {
       icon: Book,

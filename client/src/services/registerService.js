@@ -140,3 +140,29 @@ export const getCurrentCourseProgressService = async (userId, courseId) => {
   );
   return data.data;
 };
+
+// POST | mark lecture progress
+export const markLectureAsViewedService = async (
+  userId,
+  courseId,
+  lectureId
+) => {
+  const data = await axiosInstance.post(
+    `/api/course-progress/mark-lecture-view`,
+    {
+      userId,
+      courseId,
+      lectureId,
+    }
+  );
+  return data.data;
+};
+
+// POST | reset the progress
+export const resetCourseProgressService = async (userId, courseId) => {
+  const data = await axiosInstance.post(`/api/course-progress/reset-progress`, {
+    userId,
+    courseId,
+  });
+  return data.data;
+};
